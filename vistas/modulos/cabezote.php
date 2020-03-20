@@ -15,35 +15,21 @@ TOP
       
         <ul>	
 
-          <li>
-            <a href="http://facebook.com/" target="_blank">
-              <i class="fa fa-facebook redSocial facebookBlanco" aria-hidden="true"></i>
-            </a>
-          </li>
+          <?php
 
-          <li>
-            <a href="http://youtube.com/" target="_blank">
-              <i class="fa fa-youtube redSocial youtubeBlanco" aria-hidden="true"></i>
-            </a>
-          </li>
+          $social = ControladorPlantilla::ctrEstiloPlantilla();
 
-          <li>
-            <a href="http://twitter.com/" target="_blank">
-              <i class="fa fa-twitter redSocial twitterBlanco" aria-hidden="true"></i>
-            </a>
-          </li>
+          $jsonRedesSociales = (json_decode($social["redesSociales"], true));
 
-          <li>
-            <a href="http://google.com/" target="_blank">
-              <i class="fa fa-google-plus redSocial googleBlanco" aria-hidden="true"></i>
+          foreach ($jsonRedesSociales as $key => $value) {
+            echo ' <li>
+            <a href="'.$value["url"].'" target="_blank">
+              <i class="fa '.$value["red"].' redSocial '.$value["estilo"].'" aria-hidden="true"></i>
             </a>
-          </li>
+          </li>';
+          }
 
-          <li>
-            <a href="http://instagram.com/" target="_blank">
-              <i class="fa fa-instagram redSocial instagramBlanco" aria-hidden="true"></i>
-            </a>
-          </li>
+          ?>
 
         </ul>
 
@@ -81,17 +67,17 @@ TOP
 
       <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12 logotipo">
         <a href="#">
-          <img src="http://localhost/ecommerce_backend/vistas/img/plantilla/logo.png" class="img-responsive">
+          <img src="http://localhost/ecommerce_backend/<?php echo $social["logo"]?>" class="img-responsive">
         </a>
       </div>
       <!--=====================================
 		  
-     BLOQUE CATEGORIAS Y BUSCADOR
+      BLOQUE CATEGORIAS Y BUSCADOR
 			======================================-->
       <div class="col-lg-6 col-md-6 col-sm-8 col-xs-12">
         <!--=====================================
-		  BOTON CATEGORIAS
-			======================================-->
+		    BOTON CATEGORIAS
+			  ======================================-->
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 backColor" id="btnCategorias">
             <p>CATEGORIAS
               <span class="pull-right">
@@ -101,8 +87,8 @@ TOP
             </p>
         </div>
          <!--=====================================
-		  BUSCADOR
-			======================================-->
+		      BUSCADOR
+			    ======================================-->
         <div class="input-group col-lg-8 col-md-8 col-sm-8 col-xs-12" id="buscador">
           <input type="search" name="buscador" class="form-control" placeholder="Buscar...">
           <span class="input-group-btn">
@@ -135,27 +121,51 @@ TOP
         </p>
       </div>
     </div>
-  </div>
-  <!--=====================================
+  
+      <!--=====================================
 		  CATEGORIAS
 			======================================-->
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColor" id="categorias">
-    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
-      <h4>
-        <a href="#" class="pixelCategorias">
-          Lorem ipsum
-        </a>
-      </h4>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 backColor" id="categorias">
 
-      <hr>
+          <?php
 
-      <ul>
-      <li><a href="#" class="pixelSubCategoria">lorem ipsum</a></li>
-      <li><a href="#" class="pixelSubCategoria">lorem ipsum</a></li>
-      <li><a href="#" class="pixelSubCategoria">lorem ipsum</a></li>
-      <li><a href="#" class="pixelSubCategoria">lorem ipsum</a></li>
-      <li><a href="#" class="pixelSubCategoria">lorem ipsum</a></li>
-      </ul>
+          $item=null;
+          $valor=null;
+
+            $categorias = ControladorProductos::ctrMostrarCategorias($item, $valor);
+            
+
+            foreach ($categorias as $key => $value) {
+              
+              echo '<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+              <h4>
+                <a href="'.$value["ruta"].'" class="pixelCategorias">
+                  '.$value["categoria"].'
+                </a>
+              </h4>
+      
+              <hr>
+      
+              <ul>';
+
+              $item = "id_categoria";
+
+              $valor = $value["id"];
+
+              $subcategorias = ControladorProductos::ctrMostrarSubCategorias($item, $valor);
+              
+              foreach ($subcategorias as $key => $value) {
+                echo '<li><a href="'.$value["ruta"].'" class="pixelSubCategorias">'.$value["subcategoria"].'</a></li>';
+              }
+              echo '</ul>
+              </div>';
+            }
+
+          ?>
+
+
+      
+      
     </div>
   </div>
 </header>
