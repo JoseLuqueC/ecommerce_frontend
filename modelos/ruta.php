@@ -2,9 +2,24 @@
 
 class Ruta{
 
-  public function ctrRuta(){
+	/*=============================================
+	RUTA LADO DEL CLIENTE
+	=============================================*/	
 
-    return "http://localhost/ecommerce_frontend/";
-  }
+	public function ctrRuta(){
+
+		return "http://localhost/ecommerce_frontend/";
+	
+	}
+
+	/*=============================================
+	RUTA LADO DEL SERVIDOR
+	=============================================*/	
+
+	public function ctrRutaServidor(){
+
+		return "http://localhost/ecommerce_backend/";
+	
+	}
 
 }

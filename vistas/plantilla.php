@@ -16,18 +16,19 @@
 
 	<?php
 
+		$servidor = Ruta::ctrRutaServidor();
+
 		$icono = ControladorPlantilla::ctrEstiloPlantilla();
 
-		echo '<link rel="icon" href="http://localhost/ecommerce_backend/'.$icono["icono"].'">';
+		echo '<link rel="icon" href="'.$servidor.$icono["icono"].'">';
 
-		/*========================================
-		MANTENER LA RUTA DEL PROYECTO FIJA
-		======================================== */
-
+		/*=============================================
+		MANTENER LA RUTA FIJA DEL PROYECTO
+		=============================================*/
+		
 		$url = Ruta::ctrRuta();
 
 	?>
-
 
 	<link rel="stylesheet" href="<?php echo $url; ?>vistas/css/plugins/bootstrap.min.css">
 
@@ -41,9 +42,13 @@
 
 	<link rel="stylesheet" href="<?php echo $url; ?>vistas/css/cabezote.css">
 
+	<link rel="stylesheet" href="<?php echo $url; ?>vistas/css/slide.css">
+
 	<script src="<?php echo $url; ?>vistas/js/plugins/jquery.min.js"></script>
 
 	<script src="<?php echo $url; ?>vistas/js/plugins/bootstrap.min.js"></script>
+
+	<script src="<?php echo $url; ?>vistas/js/plugins/jquery.easing.js"></script>
 
 </head>
 
@@ -77,7 +82,6 @@ if(isset($_GET["ruta"])){
 
 	$rutaCategorias = ControladorProductos::ctrMostrarCategorias($item, $valor);
 
-	var_dump($rutaCategorias, $item, $valor);
 	if($rutas[0] == $rutaCategorias["ruta"]){
 
 		$ruta = $rutas[0];
@@ -114,10 +118,17 @@ if(isset($_GET["ruta"])){
 
 	}
 
+}else{
+
+	include "modulos/slide.php";
+
 }
 
 ?>
+
 <script src="<?php echo $url; ?>vistas/js/cabezote.js"></script>
 <script src="<?php echo $url; ?>vistas/js/plantilla.js"></script>
+<script src="<?php echo $url; ?>vistas/js/slide.js"></script>
+
 </body>
 </html>
