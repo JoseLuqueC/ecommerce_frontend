@@ -10,7 +10,7 @@ BANNER
 
 <figure class="banner">
 
-	<img src="http://localhost/backend/vistas/img/banner/default.jpg" class="img-responsive" width="100%">	
+	<img src="<?= $servidor?>vistas/img/banner/default.jpg" class="img-responsive" width="100%">	
 
 	<div class="textoBanner textoDer">
 		
