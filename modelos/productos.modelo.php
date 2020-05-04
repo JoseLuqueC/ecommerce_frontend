@@ -1,48 +1,112 @@
-<?php 
+<?php
 
 require_once "conexion.php";
 
 class ModeloProductos{
 
-  /*=========================================
-  MOSTRAR CATEGORIAS
-  ======================================== */
-  static public function mdlMostrarCategorias($tabla, $item, $valor){
+	/*=============================================
+	MOSTRAR CATEGORÍAS
+	=============================================*/
 
-    if($item!=null){
-      $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
-      $stmt->bindParam(":".$item, $valor, PDO::PARAM_STR);
-      $stmt->execute();
-      return $stmt->fetch();
+	static public function mdlMostrarCategorias($tabla, $item, $valor){
 
-    }else{
+		if($item != null){
 
-      $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
-      $stmt->execute();
-      return $stmt->fetchAll();
-    }
-    $stmt -> close();
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
 
-    $stmt = null;
+			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
 
-  }
+			$stmt -> execute();
 
-  /*=========================================
-  MOSTRAR SUBCATEGORIAS
-  ======================================== */
+			return $stmt -> fetch();
 
-  static public function mdlMostrarSubCategorias($tabla, $item, $valor){
-    $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
-    $stmt->bindParam(":".$item, $valor, PDO::PARAM_INT);
-    $stmt->execute();
+		}else{
 
-    return $stmt->fetchAll();
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
 
-    $stmt -> close();
+			$stmt -> execute();
 
-    $stmt = null;
+			return $stmt -> fetchAll();
 
-  }
+		}
+		
+		$stmt -> close();
 
+		$stmt = null;
+
+	}
+
+	/*=============================================
+	MOSTRAR SUB-CATEGORÍAS
+	=============================================*/
+
+	static public function mdlMostrarSubCategorias($tabla, $item, $valor){
+
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+
+		$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+
+		$stmt -> execute();
+
+		return $stmt -> fetchAll();
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
+
+	/*=============================================
+	MOSTRAR PRODUCTOS
+	=============================================*/
+
+	static public function mdlMostrarProductos($tabla, $ordenar, $item, $valor){
+
+		if($item != null){
+
+			$stmt = Conexion::conectar()->prepare("SELECT *FROM $tabla WHERE $item = :$item ORDER BY $ordenar DESC LIMIT 4");
+
+			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+
+		}else{
+
+			$stmt = Conexion::conectar()->prepare("SELECT *FROM $tabla ORDER BY $ordenar DESC LIMIT 4");
+
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+
+		}
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
+
+
+	/*=============================================
+	MOSTRAR INFOPRODUCTO
+	=============================================*/
+
+	static public function mdlMostrarInfoProducto($tabla, $item, $valor){
+
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+
+		$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+
+		$stmt -> execute();
+
+		return $stmt -> fetch();
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
 
 }
