@@ -16,6 +16,8 @@
 
 	<?php
 
+		session_start();
+
 		$servidor = Ruta::ctrRutaServidor();
 
 		$icono = ControladorPlantilla::ctrEstiloPlantilla();
@@ -98,27 +100,30 @@ if(isset($_GET["ruta"])){
 	=============================================*/
 
 	$rutaCategorias = ControladorProductos::ctrMostrarCategorias($item, $valor);
+	if($rutaCategorias != null || $rutaCategorias!=""){
+		if($rutas[0] == $rutaCategorias["ruta"]){
 
-	if($rutas[0] == $rutaCategorias["ruta"]){
-
-		$ruta = $rutas[0];
-
+			$ruta = $rutas[0];
+	
+		}
 	}
+	
 
 	/*=============================================
 	URL'S AMIGABLES DE SUBCATEGORÍAS
 	=============================================*/
 
 	$rutaSubCategorias = ControladorProductos::ctrMostrarSubCategorias($item, $valor);
+	if(	$rutaSubCategorias != null || 	$rutaSubCategorias !=""){
+		foreach ($rutaSubCategorias as $key => $value) {
+			
+			if($rutas[0] == $value["ruta"]){
 
-	foreach ($rutaSubCategorias as $key => $value) {
-		
-		if($rutas[0] == $value["ruta"]){
+				$ruta = $rutas[0];
 
-			$ruta = $rutas[0];
+			}
 
 		}
-
 	}
 
 	/*=============================================
@@ -126,11 +131,12 @@ if(isset($_GET["ruta"])){
 	=============================================*/
 
 	$rutaProductos = ControladorProductos::ctrMostrarInfoProducto($item, $valor);
-	
-	if($rutas[0] == $rutaProductos["ruta"]){
+	if($rutaProductos != null || $rutaProductos!=""){
+		if($rutas[0] == $rutaProductos["ruta"]){
 
-		$infoProducto = $rutas[0];
+			$infoProducto = $rutas[0];
 
+		}
 	}
 
 	/*=============================================
@@ -144,6 +150,10 @@ if(isset($_GET["ruta"])){
 	}else if($infoProducto != null){
 
 		include "modulos/infoproducto.php";
+
+	}else if($rutas[0] == "buscador"){
+
+		include "modulos/buscador.php";
 
 	}else{
 
@@ -161,6 +171,8 @@ if(isset($_GET["ruta"])){
 
 ?>
 
+
+<input type="hidden" value="<?php echo $url; ?>" id="rutaOculta">
 <!--=====================================
 JAVASCRIPT PERSONALIZADO
 ======================================-->
@@ -168,6 +180,7 @@ JAVASCRIPT PERSONALIZADO
 <script src="<?php echo $url; ?>vistas/js/cabezote.js"></script>
 <script src="<?php echo $url; ?>vistas/js/plantilla.js"></script>
 <script src="<?php echo $url; ?>vistas/js/slide.js"></script>
+<script src="<?php echo $url; ?>vistas/js/buscador.js"></script>
 
 </body>
 </html>
