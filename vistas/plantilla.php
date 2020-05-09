@@ -40,6 +40,8 @@
 
 	<link rel="stylesheet" href="<?php echo $url; ?>vistas/css/plugins/font-awesome.min.css">
 
+	<link rel="stylesheet" href="<?php echo $url; ?>vistas/css/plugins/flexslider.css">
+
 	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
 	<link href="https://fonts.googleapis.com/css?family=Ubuntu|Ubuntu+Condensed" rel="stylesheet">
@@ -56,6 +58,8 @@
 
 	<link rel="stylesheet" href="<?php echo $url; ?>vistas/css/productos.css">
 
+	<link rel="stylesheet" href="<?php echo $url; ?>vistas/css/infoproducto.css">
+
 	<!--=====================================
 	PLUGINS DE JAVASCRIPT
 	======================================-->
@@ -67,6 +71,10 @@
 	<script src="<?php echo $url; ?>vistas/js/plugins/jquery.easing.js"></script>
 
 	<script src="<?php echo $url; ?>vistas/js/plugins/jquery.scrollUp.js"></script>
+
+	<script src="<?php echo $url; ?>vistas/js/plugins/jquery.flexslider.js"></script>
+
+	
 
 </head>
 
@@ -100,30 +108,27 @@ if(isset($_GET["ruta"])){
 	=============================================*/
 
 	$rutaCategorias = ControladorProductos::ctrMostrarCategorias($item, $valor);
-	if($rutaCategorias != null || $rutaCategorias!=""){
-		if($rutas[0] == $rutaCategorias["ruta"]){
 
-			$ruta = $rutas[0];
-	
-		}
+	if($rutas[0] == $rutaCategorias["ruta"]){
+
+		$ruta = $rutas[0];
+
 	}
-	
 
 	/*=============================================
 	URL'S AMIGABLES DE SUBCATEGORÍAS
 	=============================================*/
 
 	$rutaSubCategorias = ControladorProductos::ctrMostrarSubCategorias($item, $valor);
-	if(	$rutaSubCategorias != null || 	$rutaSubCategorias !=""){
-		foreach ($rutaSubCategorias as $key => $value) {
-			
-			if($rutas[0] == $value["ruta"]){
 
-				$ruta = $rutas[0];
+	foreach ($rutaSubCategorias as $key => $value) {
+		
+		if($rutas[0] == $value["ruta"]){
 
-			}
+			$ruta = $rutas[0];
 
 		}
+
 	}
 
 	/*=============================================
@@ -131,12 +136,11 @@ if(isset($_GET["ruta"])){
 	=============================================*/
 
 	$rutaProductos = ControladorProductos::ctrMostrarInfoProducto($item, $valor);
-	if($rutaProductos != null || $rutaProductos!=""){
-		if($rutas[0] == $rutaProductos["ruta"]){
+	
+	if($rutas[0] == $rutaProductos["ruta"]){
 
-			$infoProducto = $rutas[0];
+		$infoProducto = $rutas[0];
 
-		}
 	}
 
 	/*=============================================
@@ -181,6 +185,7 @@ JAVASCRIPT PERSONALIZADO
 <script src="<?php echo $url; ?>vistas/js/plantilla.js"></script>
 <script src="<?php echo $url; ?>vistas/js/slide.js"></script>
 <script src="<?php echo $url; ?>vistas/js/buscador.js"></script>
+<script src="<?php echo $url; ?>vistas/js/infoproducto.js"></script>
 
 </body>
 </html>
