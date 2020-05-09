@@ -108,12 +108,14 @@ if(isset($_GET["ruta"])){
 	=============================================*/
 
 	$rutaCategorias = ControladorProductos::ctrMostrarCategorias($item, $valor);
+	if($rutaCategorias != null){
+		if($rutas[0] == $rutaCategorias["ruta"]){
 
-	if($rutas[0] == $rutaCategorias["ruta"]){
-
-		$ruta = $rutas[0];
-
+			$ruta = $rutas[0];
+	
+		}
 	}
+	
 
 	/*=============================================
 	URL'S AMIGABLES DE SUBCATEGORÍAS
