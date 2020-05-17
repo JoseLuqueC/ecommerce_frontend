@@ -1,4 +1,4 @@
-# Impedir que se luede ver el listado de contenido de un directorio
+# Impedir que se pueda ver el listado de contenidos de un directorio
 
 Options All -Indexes
 

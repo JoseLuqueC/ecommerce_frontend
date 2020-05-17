@@ -5,13 +5,14 @@ require_once "../modelos/plantilla.modelo.php";
 
 class AjaxPlantilla{
 
-  public function ajaxEstiloPlantilla(){
+	public function ajaxEstiloPlantilla(){
 
-    $respuesta = ControladorPlantilla::ctrEstiloPlantilla();
+		$respuesta = ControladorPlantilla::ctrEstiloPlantilla();
 
-    echo json_encode($respuesta);
+		echo json_encode($respuesta);
 
-  }
+	}
+
 
 }
 

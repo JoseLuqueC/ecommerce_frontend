@@ -11,28 +11,176 @@ $ruta = $rutas[0];
 
 $banner = ControladorProductos::ctrMostrarBanner($ruta);
 
-if(	$banner != null || 	$banner !=""){
-	$titulo1 = json_decode($banner["titulo1"],true);
-	$titulo2 = json_decode($banner["titulo2"],true);
-	$titulo3 = json_decode($banner["titulo3"],true);
-}
+date_default_timezone_set('America/Bogota');
+
+$fecha = date('Y-m-d');
+$hora = date('H:i:s');
+
+$fechaActual = $fecha.' '.$hora;
+
 if($banner != null){
 
-echo '<figure class="banner">
+	if($banner["estado"] != 0){
 
-		<img src="'.$servidor.$banner["img"].'" class="img-responsive" width="100%">	
+		echo '<figure class="banner">
 
-		<div class="textoBanner '.$banner["estilo"].'">
-			
-			<h1 style="color:'.$titulo1["color"].'">'.$titulo1["texto"].'</h1>
+				<img src="'.$servidor.$banner["img"].'" class="img-responsive" width="100%">';	
 
-			<h2 style="color:'.$titulo2["color"].'"><strong>'.$titulo2["texto"].'</strong></h2>
+				if($banner["ruta"] != "sin-categoria"){
 
-			<h3 style="color:'.$titulo3["color"].'">'.$titulo3["texto"].'</h3>
+					/*=============================================
+					BANNER PARA CATEGORÍAS
+					=============================================*/
 
-		</div>
+					if($banner["tipo"] == "categorias"){
 
-	</figure>';
+						$item = "ruta";
+						$valor = $banner["ruta"];
+
+						$ofertas = ControladorProductos::ctrMostrarCategorias($item, $valor);
+
+						if($ofertas["oferta"] == 1){
+
+							echo '<div class="textoBanner textoIzq">
+
+								<h1 style="color:#fff" class="text-uppercase">'.$ofertas["categoria"].'</h1>
+
+							</div>
+
+							<div class="textoBanner textoDer">
+							
+								<h1 style="color:#fff">OFERTAS ESPECIALES</h1>';
+
+								if($ofertas["precioOferta"] != 0){
+									
+									echo '<h2 style="color:#fff"><strong>Todos los productos a $ '.$ofertas["precioOferta"].'</strong></h2>';
+
+								}
+
+								if($ofertas["descuentoOferta"] != 0){
+								
+									echo '<h2 style="color:#fff"><strong>Todos los productos con '.$ofertas["descuentoOferta"].'% OFF</strong></h2>';
+								}
+
+							echo '<h3 class="col-md-0 col-sm-0 col-xs-0" style="color:#fff">
+								
+								La oferta termina en<br>
+
+								<div class="countdown2" finOferta="'.$ofertas["finOferta"].'">
+
+
+							</h3>';
+
+							$datetime1 = new DateTime($ofertas["finOferta"]);
+							$datetime2 = new DateTime($fechaActual);
+
+							$interval = date_diff($datetime1, $datetime2);
+
+							$finOferta = $interval->format('%a');
+
+							if($finOferta == 0){
+
+								echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina hoy</h3>';
+
+							}else if($finOferta == 1){
+		
+								echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina en '.$finOferta.' día</h3>';
+		
+							}else{
+		
+								echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina en '.$finOferta.' días</h3>';
+		
+							}
+
+
+							echo '</div>';
+
+						}
+
+					}
+
+					/*=============================================
+					BANNER PARA SUBCATEGORÍAS
+					=============================================*/
+
+					if($banner["tipo"] == "subcategorias"){
+
+						$item = "ruta";
+						$valor = $banner["ruta"];
+
+						$ofertas = ControladorProductos::ctrMostrarSubCategorias($item, $valor);
+
+						if($ofertas[0]["oferta"] == 1){
+
+							echo '<div class="textoBanner textoIzq">
+
+								<h1 style="color:#fff" class="text-uppercase">'.$ofertas[0]["subcategoria"].'</h1>
+
+							</div>
+
+							<div class="textoBanner textoDer">
+							
+								<h1 style="color:#fff">OFERTAS ESPECIALES</h1>';
+
+								if($ofertas[0]["precioOferta"] != 0){
+									
+									echo '<h2 style="color:#fff"><strong>Todos los productos a $ '.$ofertas[0]["precioOferta"].'</strong></h2>';
+
+								}
+
+								if($ofertas[0]["descuentoOferta"] != 0){
+								
+									echo '<h2 style="color:#fff"><strong>Todos los productos con '.$ofertas[0]["descuentoOferta"].'% OFF</strong></h2>';
+								}
+
+							echo '<h3 class="col-md-0 col-sm-0 col-xs-0" style="color:#fff">
+								
+								La oferta termina en<br>
+
+								<div class="countdown2" finOferta="'.$ofertas[0]["finOferta"].'">
+
+
+							</h3>';
+
+							$datetime1 = new DateTime($ofertas[0]["finOferta"]);
+							$datetime2 = new DateTime($fechaActual);
+
+							$interval = date_diff($datetime1, $datetime2);
+
+							$finOferta = $interval->format('%a');
+
+							if($finOferta == 0){
+
+								echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina hoy</h3>';
+
+							}else if($finOferta == 1){
+		
+								echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina en '.$finOferta.' día</h3>';
+		
+							}else{
+		
+								echo '<h3 class="col-lg-0" style="color:#fff">La oferta termina en '.$finOferta.' días</h3>';
+		
+							}
+
+
+							echo '</div>';
+
+						}
+
+
+
+
+						
+					}
+
+
+
+				}
+
+		echo '</figure>';
+
+	}
 
 }
 
@@ -128,7 +276,7 @@ LISTAR PRODUCTOS
 			LLAMADO DE PAGINACIÓN
 			=============================================*/
 
-			if(isset($rutas[1])){
+			if(isset($rutas[1]) && preg_match('/^[0-9]+$/', $rutas[1])){
 
 				if(isset($rutas[2])){
 
@@ -146,7 +294,15 @@ LISTAR PRODUCTOS
 
 				}else{
 
-					$modo = $_SESSION["ordenar"];
+					if(isset($_SESSION["ordenar"])){
+
+						$modo = $_SESSION["ordenar"];
+
+					}else{
+
+						$modo = "DESC";
+
+					}		
 
 				}
 
@@ -159,6 +315,7 @@ LISTAR PRODUCTOS
 				$base = 0;
 				$tope = 12;
 				$modo = "DESC";
+				$_SESSION["ordenar"] = "DESC";
 
 			}
 
@@ -205,7 +362,9 @@ LISTAR PRODUCTOS
 					$valor2 = $categoria["id"];
 
 				}
-			}		
+			}	
+
+			
 
 			$productos = ControladorProductos::ctrMostrarProductos($ordenar, $item2, $valor2, $base, $tope, $modo);
 			$listaProductos = ControladorProductos::ctrListarProductos($ordenar, $item2, $valor2);
@@ -226,12 +385,14 @@ LISTAR PRODUCTOS
 				echo '<ul class="grid0">';
 
 					foreach ($productos as $key => $value) {
+
+					if($value["estado"] != 0){
 					
-					echo '<li class="col-md-3 col-sm-6 col-xs-12">
+						echo '<li class="col-md-3 col-sm-6 col-xs-12">
 
 							<figure>
 								
-								<a href="'.$value["ruta"].'" class="pixelProducto">
+								<a href="'.$url.$value["ruta"].'" class="pixelProducto">
 									
 									<img src="'.$servidor.$value["portada"].'" class="img-responsive">
 
@@ -239,25 +400,27 @@ LISTAR PRODUCTOS
 
 							</figure>
 
-							'.$value["id"].'
-
 							<h4>
 					
 								<small>
 									
-									<a href="'.$value["ruta"].'" class="pixelProducto">
+									<a href="'.$url.$value["ruta"].'" class="pixelProducto">
 										
 										'.$value["titulo"].'<br>
 
 										<span style="color:rgba(0,0,0,0)">-</span>';
 
-										if($value["nuevo"] != 0){
+										$fecha = date('Y-m-d');
+										$fechaActual = strtotime('-30 day', strtotime($fecha));
+										$fechaNueva = date('Y-m-d', $fechaActual);
+
+										if($fechaNueva < $value["fecha"]){
 
 											echo '<span class="label label-warning fontSize">Nuevo</span> ';
 
 										}
 
-										if($value["oferta"] != 0){
+										if($value["oferta"] != 0 && $value["precio"] != 0){
 
 											echo '<span class="label label-warning fontSize">'.$value["descuentoOferta"].'% off</span>';
 
@@ -333,7 +496,7 @@ LISTAR PRODUCTOS
 
 									}
 
-									echo '<a href="'.$value["ruta"].'" class="pixelProducto">
+									echo '<a href="'.$url.$value["ruta"].'" class="pixelProducto">
 									
 										<button type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Ver producto">
 											
@@ -348,6 +511,8 @@ LISTAR PRODUCTOS
 							</div>
 
 						</li>';
+
+					}
 				}
 
 				echo '</ul>
@@ -356,13 +521,15 @@ LISTAR PRODUCTOS
 
 				foreach ($productos as $key => $value) {
 
-					echo '<li class="col-xs-12">
+					if($value["estado"] != 0){
+
+						echo '<li class="col-xs-12">
 					  
 				  		<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
 							   
 							<figure>
 						
-								<a href="'.$value["ruta"].'" class="pixelProducto">
+								<a href="'.$url.$value["ruta"].'" class="pixelProducto">
 									
 									<img src="'.$servidor.$value["portada"].'" class="img-responsive">
 
@@ -377,20 +544,22 @@ LISTAR PRODUCTOS
 							<h1>
 
 								<small>
-
-									<a href="'.$value["ruta"].'" class="pixelProducto">
-
-										<a href="'.$value["ruta"].'" class="pixelProducto">
+		
+									<a href="'.$url.$value["ruta"].'" class="pixelProducto">
 										
 										'.$value["titulo"].'<br>';
 
-										if($value["nuevo"] != 0){
+										$fecha = date('Y-m-d');
+										$fechaActual = strtotime('-30 day', strtotime($fecha));
+										$fechaNueva = date('Y-m-d', $fechaActual);
+
+										if($fechaNueva < $value["fecha"]){
 
 											echo '<span class="label label-warning">Nuevo</span> ';
 
 										}
 
-										if($value["oferta"] != 0){
+										if($value["oferta"] != 0 && $value["precio"] != 0){
 
 											echo '<span class="label label-warning">'.$value["descuentoOferta"].'% off</span>';
 
@@ -462,7 +631,7 @@ LISTAR PRODUCTOS
 
 									}
 
-						  		echo '<a href="'.$value["ruta"].'" class="pixelProducto">
+						  		echo '<a href="'.$url.$value["ruta"].'" class="pixelProducto">
 
 							  		<button type="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="Ver producto">
 
@@ -479,6 +648,8 @@ LISTAR PRODUCTOS
 						<div class="col-xs-12"><hr></div>
 
 					</li>';
+
+					}
 
 				}
 

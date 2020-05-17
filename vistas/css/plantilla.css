@@ -7,7 +7,7 @@ GLOBAL
 	padding:0px;
 	list-style: none;
 	text-decoration: none;
-	font-family: 'Ubunt', sans-serif;
+	font-family: 'Ubuntu', sans-serif;
 }
 
 ul, ol{
@@ -128,7 +128,7 @@ REDES SOCIALES
 ERROR 404, VERIFICAR
 =============================================*/
 
-.error404, .verificar{
+.error404. .verificar{
 	color:#333;
 }
 

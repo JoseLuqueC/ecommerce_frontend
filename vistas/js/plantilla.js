@@ -110,7 +110,6 @@ if(pagActiva != null){
 
 }
 
-
 /*=============================================
 ENLACES PAGINACIÓN
 =============================================*/
@@ -130,6 +129,98 @@ if(isNaN(pagActual)){
    $("#item"+pagActual).addClass("active");
  
 }
+
+
+
+/*=============================================
+OFERTAS
+=============================================*/
+$(".cerrarOfertas").click(function(){
+
+	$(this).parent().remove();
+
+})
+
+/*=============================================
+CONTADOR DE TIEMPO
+=============================================*/
+
+var finOferta = $(".countdown");
+var fechaFinOferta = [];
+
+for(var i = 0; i < finOferta.length; i++){
+
+	fechaFinOferta[i] = $(finOferta[i]).attr("finOferta");
+
+	$(finOferta[i]).dsCountDown({
+
+	endDate: new Date(fechaFinOferta[i]),
+
+	theme: 'flat', 
+
+	titleDays: 'Días', 
+
+	titleHours: 'Horas', 
+
+	titleMinutes: 'Minutos', 
+
+	titleSeconds: 'Segundos' 
+
+
+	});
+
+
+}
+
+/*=============================================
+EVENTOS PIXEL DE FACEBOOK
+=============================================*/
+
+$(".pixelCategorias").click(function(){
+
+	var titulo = $(this).attr("titulo");
+
+	fbq('track', 'Categoria '+titulo, {
+
+		title: titulo
+
+	})
+
+})
+
+$(".pixelSubCategorias").click(function(){
+
+	var titulo = $(this).attr("titulo");
+
+	fbq('track', 'Subcategoria '+titulo, {
+
+		title: titulo
+
+	})
+
+})
+
+
+$(".pixelOferta").click(function(){
+
+	var titulo = $(this).attr("titulo");
+
+	fbq('track', 'Oferta '+titulo, {
+
+		title: titulo
+
+	})
+
+})
+
+
+
+
+
+
+
+
+
 
 
 
