@@ -111,15 +111,16 @@ TOP
 
 					$social = ControladorPlantilla::ctrEstiloPlantilla();
 
-					$jsonRedesSociales = json_decode($social["redesSociales"],true);		
+					$jsonRedesSociales = json_decode($social["redesSociales"],true);
 
 					foreach ($jsonRedesSociales as $key => $value) {
-
-						echo '<li>
-								<a href="'.$value["url"].'" target="_blank">
-									<i class="fa '.$value["red"].' redSocial '.$value["estilo"].'" aria-hidden="true"></i>
-								</a>
-							</li>';
+						if($value['activo']!=0){
+							echo '<li>
+									<a href="'.$value["url"].'" target="_blank">
+										<i class="fa '.$value["red"].' redSocial '.$value["estilo"].'" aria-hidden="true"></i>
+									</a>
+								</li>';
+						}
 					}
 
 					?>

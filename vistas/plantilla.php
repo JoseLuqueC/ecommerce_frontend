@@ -41,15 +41,14 @@
 		}
 
 		$cabeceras = ControladorPlantilla::ctrTraerCabeceras($ruta);
-		if($cabeceras!=null){
+		// if($cabeceras){
 			if(!$cabeceras["ruta"]){
 
 				$ruta = "inicio";
 
 				$cabeceras = ControladorPlantilla::ctrTraerCabeceras($ruta);
-
 			}
-		}
+		// }
 
 	?>
 
